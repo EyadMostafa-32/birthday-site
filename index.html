@@ -16,11 +16,11 @@ body {
     color: #fff;
 }
 
-/* الظرف */
+/* ✅ ظرف متظبط */
 .envelope {
     position: fixed;
-    width: 320px;
-    height: 220px;
+    width: 300px;
+    height: 200px;
     background: #ff4b6e;
     top: 50%;
     left: 50%;
@@ -34,25 +34,27 @@ body {
 .envelope::before {
     content: "";
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff6f91;
-    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 100px solid #ff6f91;
     top: 0;
     left: 0;
-    transition: 0.8s;
 }
 
+/* الفيونكة */
 .bow {
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 40px;
+    font-size: 45px;
 }
 
+/* حركة الفتح */
 .open .envelope {
-    transform: translate(-50%, -200%) rotateX(180deg);
+    transform: translate(-50%, -250%) rotateX(180deg);
     opacity: 0;
 }
 
@@ -72,18 +74,12 @@ body {
     margin-top: 40px;
 }
 
-/* الصور */
-.center-img {
-    width: 250px;
-    border-radius: 20px;
-    margin: 20px 0;
-}
-
+/* الصور الجانبية */
 .left-img {
     position: fixed;
     left: 20px;
     bottom: 120px;
-    width: 220px;
+    width: 200px;
     border-radius: 20px;
 }
 
@@ -91,7 +87,24 @@ body {
     position: fixed;
     right: 20px;
     bottom: 120px;
-    width: 220px;
+    width: 200px;
+    border-radius: 20px;
+}
+
+/* ✅ ترتيب الفيديو والصورة */
+.media-box {
+    display: flex;
+    flex-direction: column; /* يخليهم تحت بعض */
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* الصورة التالتة */
+.bottom-img {
+    width: 250px;
+    border-radius: 20px;
+    margin-top: 15px;
 }
 
 button {
@@ -127,12 +140,10 @@ button {
 <!-- المحتوى -->
 <div id="mainContent" class="hidden">
 
-    <!-- 👇 صورة الشمال -->
-    <!-- ✏️ CHANGE IMAGE NAME HERE -->
+    <!-- صورة الشمال -->
     <img src="imge/bear.png.jpeg" class="left-img">
 
-    <!-- 👇 صورة اليمين -->
-    <!-- ✏️ CHANGE IMAGE NAME HERE -->
+    <!-- صورة اليمين -->
     <img src="imge/new.jpg.jpeg" class="right-img">
 
     <div class="romantic" id="romanticText"></div>
@@ -143,19 +154,24 @@ button {
 
         <div id="countdown"></div>
 
-       
-
-        <!-- زر العودة للظرف -->
         <button onclick="goBack()">🔙 Back to envelope</button>
-
         <button onclick="showSurprise()">Click for surprise 🎁</button>
 
-        <p id="extra" style="display:none;">💖  كل سنة و انت طيبة يا ام لولى و ربنا ما يحرمنى منك 💖❤️🌍🫂</p>
+        <p id="extra" style="display:none;">
+        💖 كل سنة و انت طيبة يا ام لولى 💖
+        </p>
 
-        <br><br>
+        <!-- ✅ الفيديو + الصورة تحت بعض -->
+        <div class="media-box">
 
-        <!-- الأغنية -->
-        <iframe id="musicFrame" width="300" height="170"></iframe>
+            <!-- الأغنية -->
+            <iframe id="musicFrame" width="300" height="170"></iframe>
+
+            <!-- 👇 الصورة التالتة -->
+            <!-- ✏️ غير اسم الصورة هنا -->
+            <img src="imge/her.jpg.jpeg" class="bottom-img">
+
+        </div>
 
     </div>
 </div>
@@ -167,21 +183,20 @@ function openEnvelope(){
     setTimeout(()=>{
         document.querySelector(".envelope").style.display = "none";
         document.getElementById("mainContent").classList.remove("hidden");
-        // تشغيل الموسيقى عند فتح الظرف
-        document.getElementById("musicFrame").src = "https://www.youtube.com/embed/UZW5iYrfAQ8?autoplay=1";
+        document.getElementById("musicFrame").src =
+        "https://www.youtube.com/embed/UZW5iYrfAQ8?autoplay=1";
     },800);
 }
 
-// الرجوع للظرف
+// الرجوع
 function goBack(){
     document.body.classList.remove("open");
     document.querySelector(".envelope").style.display = "block";
     document.getElementById("mainContent").classList.add("hidden");
-    // إيقاف الموسيقى
     document.getElementById("musicFrame").src = "";
 }
 
-// النص الرومانسي
+// النص
 let text = "The most beautiful one just turned 19 ❤️";
 let i = 0;
 function typeWriter() {
