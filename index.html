@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(to right, #ff9a9e, #fecfef);
+    font-family: Arial;
+    text-align: center;
+    overflow-x: hidden;
+    color: #fff;
+}
+
+/* الظرف */
+.envelope {
+    position: fixed;
+    width: 320px;
+    height: 220px;
+    background: #ff4b6e;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    z-index: 1000;
+    cursor: pointer;
+    transition: 0.8s;
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ff6f91;
+    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    top: 0;
+    left: 0;
+    transition: 0.8s;
+}
+
+.bow {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+}
+
+.open .envelope {
+    transform: translate(-50%, -200%) rotateX(180deg);
+    opacity: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+/* النص */
+.romantic {
+    margin-top: 40px;
+    font-size: 45px;
+    font-family: 'Great Vibes', cursive;
+    color: #ff4b6e;
+}
+
+.container {
+    margin-top: 40px;
+}
+
+/* الصور */
+.center-img {
+    width: 250px;
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+.left-img {
+    position: fixed;
+    left: 20px;
+    bottom: 120px;
+    width: 220px;
+    border-radius: 20px;
+}
+
+.right-img {
+    position: fixed;
+    right: 20px;
+    bottom: 120px;
+    width: 220px;
+}
+
+button {
+    background: #ff4b6e;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    margin: 10px;
+}
+
+/* القلوب */
+.heart {
+    position: absolute;
+    color: red;
+    animation: float 5s linear infinite;
+}
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- الظرف -->
+<div class="envelope" onclick="openEnvelope()">
+    <div class="bow">🎀</div>
+</div>
+
+<!-- المحتوى -->
+<div id="mainContent" class="hidden">
+
+    <!-- 👇 صورة الشمال -->
+    <!-- ✏️ CHANGE IMAGE NAME HERE -->
+    <img src="imge/bear.png.jpeg" class="left-img">
+
+    <!-- 👇 صورة اليمين -->
+    <!-- ✏️ CHANGE IMAGE NAME HERE -->
+    <img src="imge/new.jpg.jpeg" class="right-img">
+
+    <div class="romantic" id="romanticText"></div>
+
+    <div class="container">
+
+        <h1>🎂 Happy Birthday ❤️</h1>
+
+        <div id="countdown"></div>
+
+       
+
+        <!-- زر العودة للظرف -->
+        <button onclick="goBack()">🔙 Back to envelope</button>
+
+        <button onclick="showSurprise()">Click for surprise 🎁</button>
+
+        <p id="extra" style="display:none;">💖  كل سنة و انت طيبة يا ام لولى و ربنا ما يحرمنى منك 💖❤️🌍🫂</p>
+
+        <br><br>
+
+        <!-- الأغنية -->
+        <iframe id="musicFrame" width="300" height="170"></iframe>
+
+    </div>
+</div>
+
+<script>
+// فتح الظرف
+function openEnvelope(){
+    document.body.classList.add("open");
+    setTimeout(()=>{
+        document.querySelector(".envelope").style.display = "none";
+        document.getElementById("mainContent").classList.remove("hidden");
+        // تشغيل الموسيقى عند فتح الظرف
+        document.getElementById("musicFrame").src = "https://www.youtube.com/embed/UZW5iYrfAQ8?autoplay=1";
+    },800);
+}
+
+// الرجوع للظرف
+function goBack(){
+    document.body.classList.remove("open");
+    document.querySelector(".envelope").style.display = "block";
+    document.getElementById("mainContent").classList.add("hidden");
+    // إيقاف الموسيقى
+    document.getElementById("musicFrame").src = "";
+}
+
+// النص الرومانسي
+let text = "The most beautiful one just turned 19 ❤️";
+let i = 0;
+function typeWriter() {
+    if (i < text.length) {
+        document.getElementById("romanticText").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 70);
+    }
+}
+typeWriter();
+
+// العد التنازلي
+let birthday = new Date("2026-04-01 00:00:00").getTime();
+setInterval(() => {
+    let now = new Date().getTime();
+    let diff = birthday - now;
+    let d = Math.floor(diff/(1000*60*60*24));
+    let h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    let m = Math.floor((diff%(1000*60*60))/(1000*60));
+    let s = Math.floor((diff%(1000*60))/1000);
+    document.getElementById("countdown").innerHTML =
+    `⏳ ${d}d ${h}h ${m}m ${s}s`;
+},1000);
+
+// القلوب
+setInterval(()=>{
+    let heart = document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+},300);
+
+// مفاجأة
+function showSurprise(){
+    document.getElementById("extra").style.display="block";
+}
+</script>
+
+</body>
+</html>
