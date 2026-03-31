@@ -15,7 +15,6 @@ body {
     color: #fff;
 }
 
-/* السؤال */
 .question-box {
     position: fixed;
     top: 50%;
@@ -23,14 +22,12 @@ body {
     transform: translate(-50%, -50%);
 }
 
-/* صورة فوق الأزرار */
 .question-img {
     width: 200px;
     border-radius: 20px;
     margin: 15px 0;
 }
 
-/* الأزرار */
 .btn {
     padding: 10px 25px;
     font-size: 18px;
@@ -52,12 +49,10 @@ body {
     transition: 0.3s;
 }
 
-/* إخفاء المحتوى */
 .hidden {
     display: none;
 }
 
-/* النص */
 .romantic {
     margin-top: 40px;
     font-size: 45px;
@@ -69,7 +64,6 @@ body {
     margin-top: 40px;
 }
 
-/* الصور */
 .left-img {
     position: fixed;
     left: 20px;
@@ -86,7 +80,6 @@ body {
     border-radius: 20px;
 }
 
-/* الفيديو والصورة */
 .media-box {
     display: flex;
     flex-direction: column;
@@ -110,7 +103,6 @@ button {
     margin: 10px;
 }
 
-/* القلوب */
 .heart {
     position: absolute;
     color: red;
@@ -120,18 +112,42 @@ button {
     0% { transform: translateY(100vh); }
     100% { transform: translateY(-10vh); opacity: 0; }
 }
+
+/* الألعاب النارية */
+.firework {
+    position: fixed;
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    pointer-events: none;
+}
+
+.firework::before {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    box-shadow:
+        0 -50px red, 35px -35px yellow, 50px 0 orange,
+        35px 35px pink, 0 50px blue, -35px 35px cyan,
+        -50px 0 lime, -35px -35px purple;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(0.2); opacity: 1; }
+    100% { transform: scale(2.5); opacity: 0; }
+}
 </style>
 
 </head>
 <body>
 
-<!-- السؤال -->
 <div class="question-box" id="questionBox">
 
     <h2 style="color: red;">Do you love me? ❤️</h2>
 
-    <!-- 📸 الصورة -->
-    <!-- ✏️ غير اسم الصورة هنا -->
     <img src="imge/flower.jpg" class="question-img">
 
     <br>
@@ -141,7 +157,6 @@ button {
 
 </div>
 
-<!-- المحتوى -->
 <div id="mainContent" class="hidden">
 
     <img src="imge/bear.png.jpeg" class="left-img">
@@ -163,12 +178,8 @@ button {
         </p>
 
         <div class="media-box">
-
             <iframe id="musicFrame" width="300" height="170"></iframe>
-
-            <!-- 👇 الصورة -->
             <img src="imge/gif.jpg" class="bottom-img">
-
         </div>
 
     </div>
@@ -177,22 +188,25 @@ button {
 <script>
 let scale = 1;
 
-// لما تضغط No 😈
 function shrinkNo(){
     scale += 0.3;
-
     document.getElementById("yesBtn").style.transform = `scale(${scale})`;
-
     let noBtn = document.getElementById("noBtn");
     noBtn.style.transform = `scale(${1/scale})`;
-
     if(scale > 3){
         noBtn.style.display = "none";
     }
 }
 
-// فتح الموقع
+// ✅ التعديل هنا
 function openSite(){
+    let now = new Date().getTime();
+
+    if(now < birthday){
+        alert("أستنى حبة يا أوزتى 😄❤️");
+        return;
+    }
+
     document.getElementById("questionBox").style.display = "none";
     document.getElementById("mainContent").classList.remove("hidden");
 
@@ -200,14 +214,12 @@ function openSite(){
     "https://www.youtube.com/embed/UZW5iYrfAQ8?autoplay=1";
 }
 
-// رجوع
 function goBack(){
     document.getElementById("questionBox").style.display = "block";
     document.getElementById("mainContent").classList.add("hidden");
     document.getElementById("musicFrame").src = "";
 }
 
-// النص
 let text = "The most beautiful one just turned 19 ❤️";
 let i = 0;
 function typeWriter() {
@@ -219,20 +231,43 @@ function typeWriter() {
 }
 typeWriter();
 
-// العد
 let birthday = new Date("2026-04-01 00:00:00").getTime();
+let fired = false;
+
 setInterval(() => {
     let now = new Date().getTime();
     let diff = birthday - now;
+
     let d = Math.floor(diff/(1000*60*60*24));
     let h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
     let m = Math.floor((diff%(1000*60*60))/(1000*60));
     let s = Math.floor((diff%(1000*60))/1000);
-    document.getElementById("countdown").innerHTML =
-    `⏳ ${d}d ${h}h ${m}m ${s}s`;
+
+    if(diff <= 0){
+        document.getElementById("countdown").innerHTML = "🎉 Time's Up 🎉";
+
+        if(!fired){
+            fired = true;
+            setInterval(launchFireworks, 500);
+        }
+    } else {
+        document.getElementById("countdown").innerHTML =
+        `⏳ ${d}d ${h}h ${m}m ${s}s`;
+    }
+
 },1000);
 
-// القلوب
+function launchFireworks(){
+    for(let i = 0; i < 15; i++){
+        let fw = document.createElement("div");
+        fw.className = "firework";
+        fw.style.left = (Math.random() > 0.5 ? 0 : 100) + "vw";
+        fw.style.top = Math.random() * 100 + "vh";
+        document.body.appendChild(fw);
+        setTimeout(()=> fw.remove(), 1000);
+    }
+}
+
 setInterval(()=>{
     let heart = document.createElement("div");
     heart.className="heart";
@@ -242,7 +277,6 @@ setInterval(()=>{
     setTimeout(()=>heart.remove(),5000);
 },300);
 
-// مفاجأة
 function showSurprise(){
     document.getElementById("extra").style.display="block";
 }
